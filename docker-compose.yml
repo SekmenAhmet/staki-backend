@@ -1,0 +1,122 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: staki-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - staki-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: staki_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    networks:
+      - staki-network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: staki-gateway
+    ports:
+      - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${API_GATEWAY_PORT}
+      - RUST_LOG=${RUST_LOG}
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+    networks:
+      - staki-network
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
+    container_name: staki-auth
+    ports:
+      - "${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${AUTH_SERVICE_PORT}
+      - RUST_LOG=${RUST_LOG}
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+    networks:
+      - staki-network
+
+  messaging-service:
+    build:
+      context: .
+      dockerfile: messaging-service/Dockerfile
+    container_name: staki-messaging
+    ports:
+      - "${MESSAGING_SERVICE_PORT}:${MESSAGING_SERVICE_PORT}"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${MESSAGING_SERVICE_PORT}
+      - RUST_LOG=${RUST_LOG}
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+    networks:
+      - staki-network
+
+  social-service:
+    build:
+      context: .
+      dockerfile: social-service/Dockerfile
+    container_name: staki-social
+    ports:
+      - "${SOCIAL_SERVICE_PORT}:${SOCIAL_SERVICE_PORT}"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${SOCIAL_SERVICE_PORT}
+      - RUST_LOG=${RUST_LOG}
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+    networks:
+      - staki-network
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  staki-network:
+    driver: bridge

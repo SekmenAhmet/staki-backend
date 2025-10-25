@@ -1,0 +1,38 @@
+[package]
+name = "auth-service"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Framework
+axum = { version = "0.8.6", features = ["macros"] }
+tokio = { version = "1", features = ["full"] }
+tower = "0.5.2"
+tower-http = { version = "0.6.6", features = ["cors", "trace"] }
+
+# Database
+mongodb = "3.1"
+bson = "2.15"
+
+# Redis
+redis = { version = "0.32.7", features = ["tokio-comp", "connection-manager"] }
+
+# Auth & Security
+jsonwebtoken = { version = "10.1.0", features = ["rust_crypto"] }
+bcrypt = "0.17.1"
+
+# Serialization     
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Utils
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+dotenvy = "0.15"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Shared
+shared = { path = "../shared" }

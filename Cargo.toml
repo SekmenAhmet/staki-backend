@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "shared",
+    "auth-service",
+    "messaging-service",
+    "social-service",
+    "api-gateway"
+    ]
+
+resolver = "2"

@@ -1,0 +1,31 @@
+[package]
+name = "api-gateway"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Framework
+axum = { version = "0.8.6", features = ["macros"] }
+tokio = { version = "1", features = ["full"] }
+tower = "0.5.2"
+tower-http = { version = "0.6.6", features = ["cors", "trace"] }
+
+# HTTP Client
+reqwest = { version = "0.12", features = ["json"] }
+
+# Auth
+jsonwebtoken = { version = "10.1.0", features = ["rust_crypto"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Utils
+dotenvy = "0.15"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Shared
+shared = { path = "../shared" }

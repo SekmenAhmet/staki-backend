@@ -1,0 +1,12 @@
+[package]
+name = "shared"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Auth
+jsonwebtoken = "10.1.0"
+chrono = "0.4"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }

@@ -1,0 +1,11 @@
+/target/
+**/target/
+
+Cargo.lock
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+.env
