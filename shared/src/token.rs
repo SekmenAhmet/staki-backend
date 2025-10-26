@@ -1,5 +1,5 @@
 use chrono::{Duration, Utc};
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -15,7 +15,7 @@ pub fn generate_token(
     secret: &str,
 ) -> Result<String, jsonwebtoken::errors::Error> {
     let exp = Utc::now()
-        .checked_add_signed(Duration::days(7))
+        .checked_add_signed(Duration::minutes(15))
         .expect("valid timestamp")
         .timestamp();
 
@@ -33,10 +33,13 @@ pub fn generate_token(
 }
 
 pub fn validate_token(token: &str, secret: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
+    let mut validation = Validation::new(Algorithm::HS256);
+    validation.validate_exp = true;
+
     decode::<Claims>(
         token,
         &DecodingKey::from_secret(secret.as_ref()),
-        &Validation::default(),
+        &validation,
     )
     .map(|data| data.claims)
 }

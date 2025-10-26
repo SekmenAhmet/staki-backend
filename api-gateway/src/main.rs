@@ -15,10 +15,8 @@ async fn main() {
 
     let config = Arc::new(Config::from_env());
 
-    // Routes publiques (auth)
-    let auth_routes = Router::new().route("/auth/{*path}", any(routes::proxy_to_auth)); // ← Changé ici
+    let auth_routes = Router::new().route("/auth/{*path}", any(routes::proxy_to_auth));
 
-    // Application complète
     let app = Router::new()
         .merge(auth_routes)
         .layer(CorsLayer::permissive())

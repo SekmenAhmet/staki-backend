@@ -49,6 +49,6 @@ COPY --from=builder /app/target/release/auth-service .
 RUN chown -R appuser:appuser /app
 USER appuser
 
-EXPOSE 8001
+EXPOSE 8081
 
 CMD ["./auth-service"]

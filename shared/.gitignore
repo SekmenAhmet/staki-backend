@@ -3,14 +3,8 @@
 **/*.rs.bk
 *.pdb
 
-# Cargo lock
+# Cargo lock (for libraries, Cargo.lock should not be committed)
 Cargo.lock
-
-# Local environment variables
-.env
-.env.local
-.env.test
-.env.production
 
 # IDE files
 .vscode/
@@ -28,10 +22,6 @@ logs/
 *.tmp
 *.swp
 *.swo
-
-# Database dumps
-*.dump
-*.sql
 
 # Backup files
 *.bak

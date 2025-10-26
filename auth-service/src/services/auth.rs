@@ -20,7 +20,6 @@ impl AuthService {
     }
 
     pub async fn register(&self, req: RegisterRequest) -> Result<AuthResponse, String> {
-        // Vérifier si email existe
         if self
             .users
             .find_one(doc! { "email": &req.email })
@@ -31,10 +30,8 @@ impl AuthService {
             return Err("Email déjà utilisé".to_string());
         }
 
-        // Hash du password
         let password_hash = hash(&req.password, DEFAULT_COST).map_err(|e| e.to_string())?;
 
-        // Création user
         let user = User {
             id: None,
             email: req.email.clone(),
@@ -50,7 +47,6 @@ impl AuthService {
             .map_err(|e| e.to_string())?;
         let user_id = result.inserted_id.as_object_id().unwrap().to_hex();
 
-        // Générer token
         let token =
             generate_token(&user_id, &user.email, &self.jwt_secret).map_err(|e| e.to_string())?;
 
@@ -65,7 +61,6 @@ impl AuthService {
     }
 
     pub async fn login(&self, req: LoginRequest) -> Result<AuthResponse, String> {
-        // Trouver user
         let user = self
             .users
             .find_one(doc! { "email": &req.email })
@@ -73,14 +68,12 @@ impl AuthService {
             .map_err(|e| e.to_string())?
             .ok_or("Mauvais identifiants")?;
 
-        // Vérifier password
         if !verify(&req.password, &user.password_hash).map_err(|e| e.to_string())? {
             return Err("Mauvais identifiants".to_string());
         }
 
         let user_id = user.id.unwrap().to_hex();
 
-        // Générer token
         let token =
             generate_token(&user_id, &user.email, &self.jwt_secret).map_err(|e| e.to_string())?;
 

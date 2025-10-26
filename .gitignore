@@ -1,11 +1,69 @@
+# Rust
 /target/
 **/target/
+**/*.rs.bk
+*.pdb
 
+# Cargo
 Cargo.lock
+**/Cargo.lock
 
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*.iml
+.DS_Store
 
+# Environment variables
 .env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+**/*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Docker volumes
+docker-data/
+mongodb-data/
+redis-data/
+
+# Test coverage
+*.profraw
+*.profdata
+coverage/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Backup files
+*.bak
+*~
+
+# Node (if using for tooling)
+node_modules/
+package-lock.json
+
+# Python (if using for scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+
+# Secrets
+*.pem
+*.key
+*.crt
+secrets/
+credentials/

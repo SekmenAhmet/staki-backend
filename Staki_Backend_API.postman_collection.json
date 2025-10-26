@@ -1,0 +1,710 @@
+{
+	"info": {
+		"_postman_id": "staki-backend-collection",
+		"name": "Staki Backend API",
+		"description": "Collection complète pour tester tous les endpoints de Staki Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth Service",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('auth_token', response.token);",
+									"    pm.environment.set('user_id', response.user.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@example.com\",\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}:{{auth_port}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{auth_port}}",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('auth_token', response.token);",
+									"    pm.environment.set('user_id', response.user.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}:{{auth_port}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{auth_port}}",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Me (Protected)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}:{{auth_port}}/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{auth_port}}",
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messaging Service",
+			"item": [
+				{
+					"name": "Conversations",
+					"item": [
+						{
+							"name": "Create Conversation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 201) {",
+											"    const response = pm.response.json();",
+											"    pm.environment.set('conversation_id', response._id);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"participants\": [\"user_id_1\", \"user_id_2\"]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/conversations",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"conversations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Conversation by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/conversations/{{conversation_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"conversations",
+										"{{conversation_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Conversations",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/users/{{user_id}}/conversations",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"users",
+										"{{user_id}}",
+										"conversations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Participant to Conversation",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"user_id\": \"new_user_id\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/conversations/{{conversation_id}}/members",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"conversations",
+										"{{conversation_id}}",
+										"members"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Participant from Conversation",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/conversations/{{conversation_id}}/members/{{user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"conversations",
+										"{{conversation_id}}",
+										"members",
+										"{{user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Conversation",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/conversations/{{conversation_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"conversations",
+										"{{conversation_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Messages",
+					"item": [
+						{
+							"name": "Send Message",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 201) {",
+											"    const response = pm.response.json();",
+											"    pm.environment.set('message_id', response._id);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"conversation_id\": \"{{conversation_id}}\",\n  \"content\": \"Hello, this is a test message!\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/messages",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"messages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Message by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/messages/{{message_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"messages",
+										"{{message_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Conversation Messages",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/conversations/{{conversation_id}}/messages",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"conversations",
+										"{{conversation_id}}",
+										"messages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mark Message as Read",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/messages/{{message_id}}/read",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"messages",
+										"{{message_id}}",
+										"read"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Message",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{messaging_port}}/messages/{{message_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{messaging_port}}",
+									"path": [
+										"messages",
+										"{{message_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Social Service",
+			"item": [
+				{
+					"name": "Posts",
+					"item": [
+						{
+							"name": "Create Post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 201) {",
+											"    const response = pm.response.json();",
+											"    pm.environment.set('post_id', response._id);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"This is my first post on Staki!\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{social_port}}/posts",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{social_port}}",
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Post by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{social_port}}/posts/{{post_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{social_port}}",
+									"path": [
+										"posts",
+										"{{post_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Posts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{social_port}}/users/{{user_id}}/posts",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{social_port}}",
+									"path": [
+										"users",
+										"{{user_id}}",
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Post",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}:{{social_port}}/posts/{{post_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{social_port}}",
+									"path": [
+										"posts",
+										"{{post_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "API Gateway",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Register (via Gateway)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"gateway@example.com\",\n  \"username\": \"gatewayuser\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{gateway_port}}/auth/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{gateway_port}}",
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login (via Gateway)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"gateway@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}:{{gateway_port}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"port": "{{gateway_port}}",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{gateway_port}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{gateway_port}}",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost"
+		},
+		{
+			"key": "gateway_port",
+			"value": "8080"
+		},
+		{
+			"key": "auth_port",
+			"value": "8081"
+		},
+		{
+			"key": "messaging_port",
+			"value": "8082"
+		},
+		{
+			"key": "social_port",
+			"value": "8083"
+		}
+	]
+}

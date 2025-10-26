@@ -4,7 +4,7 @@ use std::env;
 pub struct Config {
     pub port: u16,
     pub mongo_uri: String,
-    pub jwt_secret: String,
+    pub redis_uri: String,
 }
 
 impl Config {
@@ -13,11 +13,11 @@ impl Config {
 
         Self {
             port: env::var("PORT")
-                .unwrap_or_else(|_| "8081".to_string())
+                .unwrap_or_else(|_| "8082".to_string())
                 .parse()
                 .expect("PORT must be a number"),
             mongo_uri: env::var("MONGODB_URI").expect("MONGODB_URI must be set"),
-            jwt_secret: env::var("JWT_SECRET").expect("JWT_SECRET must be set"),
+            redis_uri: env::var("REDIS_URL").expect("REDIS_URL must be set"),
         }
     }
 }

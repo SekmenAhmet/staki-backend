@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo check:*)",
+      "Bash(dir:*)",
+      "Bash(cargo doc:*)",
+      "Bash(cargo build:*)",
+      "Bash(cargo tree:*)",
+      "Bash(cargo clean:*)",
+      "Bash(cargo test:*)",
+      "Bash(cat:*)",
+      "Read(//c/Users/sekme/OneDrive/Documents/ProjetsDev/staki/**)",
+      "Bash(cargo run:*)",
+      "Bash(timeout 3 cargo run:*)",
+      "Bash(for service in api-gateway auth-service messaging-service social-service)",
+      "Bash(do echo \"=== $service ===\")",
+      "Bash(done)",
+      "Bash(docker logs:*)",
+      "Bash(docker compose:*)",
+      "Bash(docker volume rm:*)",
+      "Bash(docker exec:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(curl:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(docker ps:*)",
+      "Bash(RUST_BACKTRACE=1 cargo test:*)",
+      "Bash(set RUST_BACKTRACE=1:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
