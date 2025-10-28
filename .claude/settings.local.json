@@ -27,7 +27,8 @@
       "Bash(python -m json.tool:*)",
       "Bash(docker ps:*)",
       "Bash(RUST_BACKTRACE=1 cargo test:*)",
-      "Bash(set RUST_BACKTRACE=1:*)"
+      "Bash(set RUST_BACKTRACE=1:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
